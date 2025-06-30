@@ -1,7 +1,8 @@
-const grid = [];
+let grid = [];
 const grid2 = [];
 let game = "playing";
 const container = document.querySelector(".container");
+const btnRestart = document.getElementById("restart");
 const rightClick = document.querySelector("button"); //-- RIGHT CLICK
 class Cells {
   constructor(isBomb, counter, revealed) {
@@ -92,7 +93,7 @@ function clickedCoordinates(x, y) {
 
   if (cell.isBomb) {
     cell.revealed = true;
-    game = "finished";
+    game = "ends";
     console.log("Game is over you moron!!");
     return;
   }
@@ -118,6 +119,7 @@ function renderBoard() {
       container.append(button);
     }
   }
+  // button.style.visibility = "hidden";
 }
 
 container.addEventListener("contextmenu", (button) => {
@@ -137,7 +139,7 @@ container.addEventListener("click", (button) => {
   target.classList.remove("revealed-false");
   target.classList.add("revealed-true");
 
-  const allButtons = document.querySelectorAll("button");
+  const allButtons = document.querySelectorAll(".container button");
 
   console.log(grid[rowStr][colStr].revealed);
 
@@ -158,16 +160,18 @@ container.addEventListener("click", (button) => {
   if (grid[rowStr][colStr].counter === 4) {
     target.style.color = "purple";
   }
-  if (game === "finished") {
+  if (game === "ends") {
     allButtons.forEach((btn) => {
       btn.classList.remove("revealed-false");
       btn.classList.add("revealed-true");
       btn.style.removeProperty("color");
       btn.disabled = true;
     });
+
     const loser = document.createElement("h3");
     loser.innerHTML = `💥GAME OVER!💥`;
-    container.appendChild(loser);
+    btnRestart.style.visibility = "visible";
+    container.append(loser);
   }
   if (gameState() === "finished" && game === "won") {
     allButtons.forEach((btn) => {
@@ -180,6 +184,18 @@ container.addEventListener("click", (button) => {
     loser.innerHTML = `Congratulations you won!🏆🏆🏆`;
     container.appendChild(loser);
   }
+});
+
+btnRestart.addEventListener("click", () => {
+  btnRestart.style.visibility = "hidden";
+  game = "playing";
+  container.innerHTML = "";
+  grid = [];
+  createTiles();
+  bombsVicinity();
+  createTilesNumbers();
+  renderBoard();
+  // alert(`Eyyyy`);
 });
 
 createTiles();
