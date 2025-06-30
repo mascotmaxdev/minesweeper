@@ -1,7 +1,8 @@
 const grid = [];
 const grid2 = [];
-
 let game = "playing";
+const container = document.querySelector(".container");
+const rightClick = document.querySelector("button"); //-- RIGHT CLICK
 class Cells {
   constructor(isBomb, counter, revealed) {
     this.isBomb = isBomb;
@@ -107,28 +108,6 @@ function clickedCoordinates(x, y) {
   }
 }
 
-// function clickedCoordinates(x, y) {
-//   if (!grid[x] || !grid[x][y]) return; // guard clause for out-of-bounds
-
-//   const cell = grid[x][y];
-//   //gameState();
-//   if (!cell.isBomb && gameState() !== "finished") {
-//     cell.revealed = true;
-//   } else if (!cell.isBomb && gameState() === "finished") {
-//     cell.revealed = true;
-//     game = "won";
-//     alert("Game won!");
-//     console.log("Congratulations you win!");
-//   } else if (cell.isBomb) {
-//     cell.revealed = true;
-//     game = "finished";
-//     console.log("Game is over you moron!!");
-//     return;
-//   }
-// }
-
-const container = document.querySelector(".container");
-
 function renderBoard() {
   for (let i = 0; i < 9; i++) {
     for (let j = 0; j < 9; j++) {
@@ -141,32 +120,29 @@ function renderBoard() {
   }
 }
 
-// const rightClick = document.querySelector("button"); -- RIGHT CLICK
-
-// container.addEventListener("contextmenu", (button) => {
-//   event.preventDefault(); // prevent the default right-click menu\
-//   const target = button.target;
-//   const [rowStr, colStr] = target.id.split(",");
-//   if (target.tagName !== "BUTTON") {
-//     return;
-//   }
-//   if (!target.classList.contains("tagged")) {
-//     target.classList.add("tagged");
-//   } else if (target.tagName === "BUTTON") {
-//     target.classList.remove("tagged");
-//   }
-//   //alert("Right-click detected!");
-// });
+container.addEventListener("contextmenu", (button) => {
+  event.preventDefault(); // prevent the default right-click menu
+  const target = button.target;
+  if (target.tagName !== "BUTTON") {
+    return;
+  }
+  target.classList.toggle("tagged");
+});
 
 container.addEventListener("click", (button) => {
   const target = button.target;
   const [rowStr, colStr] = target.id.split(",");
-
+  if (target.classList.contains("tagged")) return;
   clickedCoordinates(rowStr, colStr);
   target.classList.remove("revealed-false");
   target.classList.add("revealed-true");
+
   const allButtons = document.querySelectorAll("button");
+
   console.log(grid[rowStr][colStr].revealed);
+
+  target.classList.remove("revealed-false");
+  target.classList.add("revealed-true");
   if (grid[rowStr][colStr].counter === 0) {
     target.style.color = "transparent";
   }
@@ -208,7 +184,5 @@ container.addEventListener("click", (button) => {
 
 createTiles();
 bombsVicinity();
-//gameState();
 createTilesNumbers();
 renderBoard();
-console.table(grid);
