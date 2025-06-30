@@ -6,6 +6,9 @@
   display: grid;
   grid-template-columns: repeat(9, 70px);
   gap: 2px;
+  margin-bottom: 20px;
+  justify-content: center; /* horizontal center */
+  align-items: center; /* vertical center */
 }
 button {
   height: 70px;
@@ -21,6 +24,7 @@ button {
   border-right: 2px solid #888888;
   box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #888888;
   cursor: pointer;
+
   /* transition: background-color 0.2s ease, color 0.2s ease; */
 }
 
@@ -38,4 +42,23 @@ h1 {
 
 .revealed-true {
   background-color: #c0c0c0;
+}
+
+h3 {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  text-align: center;
+  width: max-content;
+  margin: 0;
+  position: absolute;
+  top: 105%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: rgb(219, 34, 34);
+}
+
+.tagged {
+  background-image: url("images/redflag.png"); /* Replace with your image path */
+  background-size: contain; /* Make image cover the element */
+  background-repeat: no-repeat; /* Prevent repeating */
+  background-position: center;
 }
